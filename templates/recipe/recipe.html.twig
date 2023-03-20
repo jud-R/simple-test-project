@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello RecipeController!{% endblock %}
+
+{% block body %}
+
+<div class="example-wrapper">
+    <h1> Créer votre recette </h1>
+
+{{ form_start(form) }}
+    {{ form_row(form.recipeName) }}
+    {{ form_row(form.duration)}}
+
+    <h3>Ingredients</h3>
+    <ul class="ingredients"
+    data-index="{{ form.ingredients|length > 0 ? form.ingredients|last.vars.name + 1 : 0 }}"
+    data-prototype="{{ form_widget(form.ingredients.vars.prototype)|e('html_attr') }}"
+    >
+        {% for ingredient in form.ingredients %}
+            <li>{{ form_row(ingedient.name) }}</li>
+            <li>{{ form_row(ingredient.quantity) }}</li>
+        {% endfor %}
+    </ul>
+    <button type="button" class="add_item_link" data-collection-holder-class="ingredients">Add an ingredient</button>
+
+    <h3>Etapes</h3>
+    <ul class="steps"
+    data-index="{{ form.steps|length > 0 ? form.steps|last.vars.name + 1 : 0 }}"
+    data-prototype="{{ form_widget(form.steps.vars.prototype)|e('html_attr') }}"
+    >
+        {% for step in form.steps %}
+            <li>{{ form_row(step.numero) }}</li>
+            <li>{{ form_row(step.description) }}</li>
+        {% endfor %}
+    </ul>
+    <button type="button" class="add_item_link" data-collection-holder-class="steps">Add a step</button>
+
+
+{{ form_end(form) }}
+
+
+
+</div>
+
+<script>
+const addFormToCollection = (e) => {
+  const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
+
+  const item = document.createElement('li');
+
+  item.innerHTML = collectionHolder
+    .dataset
+    .prototype
+    .replace(
+      /__name__/g,
+      collectionHolder.dataset.index
+    );
+
+
+    collectionHolder.appendChild(item);
+
+    const removeFormButton = document.createElement('button');
+    removeFormButton.innerText = 'Delete';
+
+    item.append(removeFormButton);
+
+  collectionHolder.dataset.index++;
+  console.log(addFormToCollection)
+};
+
+document
+  .querySelectorAll('.add_item_link')
+  .forEach(btn => {
+      btn.addEventListener("click", addFormToCollection)
+  });
+
+</script>
+
+{% endblock %}

@@ -2,11 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\RecipeRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Step;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\RecipeRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: RecipeRepository::class)]
 class Recipe
@@ -25,15 +26,19 @@ class Recipe
     #[ORM\Column(length: 255)]
     private ?string $duration = null;
 
-    #[ORM\ManyToMany(targetEntity: Ingredient::class, inversedBy: 'recipes')]
+    #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: Ingredient::class)]
     private Collection $ingredients;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
+    #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: Step::class)]
+    private Collection $steps;
+
     public function __construct()
     {
         $this->ingredients = new ArrayCollection();
+        $this->steps = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -109,6 +114,36 @@ class Recipe
     public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Step>
+     */
+    public function getSteps(): Collection
+    {
+        return $this->steps;
+    }
+
+    public function addStep(Step $step): self
+    {
+        if (!$this->steps->contains($step)) {
+            $this->steps->add($step);
+            $step->setRecipe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStep(Step $step): self
+    {
+        if ($this->steps->removeElement($step)) {
+            // set the owning side to null (unless already changed)
+            if ($step->getRecipe() === $this) {
+                $step->setRecipe(null);
+            }
+        }
 
         return $this;
     }

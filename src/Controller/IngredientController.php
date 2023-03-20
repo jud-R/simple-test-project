@@ -24,7 +24,12 @@ class IngredientController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // $form->getData() holds the submitted values
             // but, the original `$task` variable has also been updated
-            dd($form->get('ingredientName'));
+            $ingredient = $form->getData();
+
+            $em->persist($ingredient);
+            $em->flush();
+            $this->addFlash('success', 'Ingredient créé! ');
+
             // ... perform some action, such as saving the task to the database
 
         }

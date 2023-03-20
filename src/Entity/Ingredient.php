@@ -21,13 +21,8 @@ class Ingredient
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $quantity = null;
 
-    #[ORM\ManyToMany(targetEntity: Recipe::class, mappedBy: 'ingredients')]
-    private Collection $recipes;
-
-    public function __construct()
-    {
-        $this->recipes = new ArrayCollection();
-    }
+    #[ORM\ManyToOne(inversedBy: 'steps')]
+    private ?Recipe $recipe = null;
 
     public function getId(): ?int
     {
@@ -58,29 +53,14 @@ class Ingredient
         return $this;
     }
 
-    /**
-     * @return Collection<int, Recipe>
-     */
-    public function getRecipes(): Collection
+    public function getRecipe(): ?Recipe
     {
-        return $this->recipes;
+        return $this->recipe;
     }
 
-    public function addRecipe(Recipe $recipe): self
+    public function setRecipe(?Recipe $recipe): self
     {
-        if (!$this->recipes->contains($recipe)) {
-            $this->recipes->add($recipe);
-            $recipe->addIngredient($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRecipe(Recipe $recipe): self
-    {
-        if ($this->recipes->removeElement($recipe)) {
-            $recipe->removeIngredient($this);
-        }
+        $this->recipe = $recipe;
 
         return $this;
     }
