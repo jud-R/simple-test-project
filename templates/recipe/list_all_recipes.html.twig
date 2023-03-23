@@ -13,13 +13,16 @@
     <h1>Toutes les recettes</h1>
 
     <div class="recipe-list">
-        {% for recipe in recipes %}
+        {% for recipe in pagination %}
             <div class="recipe-item">
                 <a href="{{ path('app_show_recipe', {'id': recipe.id}) }}">{{ recipe.recipeName }}</a>
             </div>
         {% endfor %}
     </div>
 
+    {{ knp_pagination_render(pagination) }}
+
 </div>
+
 
 {% endblock %}

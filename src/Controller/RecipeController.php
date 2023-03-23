@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Knp\Component\Pager\PaginatorInterface;
+
 
 class RecipeController extends AbstractController
 {
@@ -36,11 +38,16 @@ class RecipeController extends AbstractController
     }
 
     #[Route('/list', name: 'app_recipe_list')]
-    public function list(Request $request, RecipeRepository $recipeRepository): Response
+    public function list(Request $request, RecipeRepository $recipeRepository, PaginatorInterface $paginator): Response
     {
-        $recipes = $recipeRepository->findAll();
+        // $recipes = $recipeRepository->findAll();
+        
+        $queryBuilder = $recipeRepository->createQueryBuilder('r')->getQuery();
+        $pagination = $paginator->paginate($queryBuilder, $request->query->getInt('page', 1), 10);
+
+
         return $this->render('recipe/list_all_recipes.html.twig', [
-            'recipes' => $recipes,
+            'pagination' => $pagination,
         ]);
     }
 
