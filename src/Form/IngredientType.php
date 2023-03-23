@@ -16,9 +16,7 @@ class IngredientType extends AbstractType
         $builder
             ->add('ingredientName', TextType::class)
             ->add('quantity', TextType::class)
-            ->add('save', SubmitType::class, [
-                'attr' => ['class' => 'save btn btn-success'],
-            ]);
+            ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Ingredient;
 use App\Entity\Recipe;
 use App\Form\RecipeType;
+use App\Repository\RecipeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -37,4 +38,25 @@ class RecipeController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    #[Route('/list', name: 'app_recipe_list')]
+    public function list(Request $request, RecipeRepository $recipeRepository): Response
+    {
+        $recipes = $recipeRepository->findAll();
+        //dd($recipes);
+        return $this->render('recipe/list_all_recipes.html.twig', [
+            'recipes' => $recipes,
+        ]);
+    }
+
+    #[Route('/show/{id}', name: 'app_show_recipe')]
+    public function show(Request $request, RecipeRepository $recipeRepository, Recipe $recipe): Response
+    {
+        $recipe = $recipeRepository->find($recipe);
+        return $this->render('recipe/show_recipe.html.twig', [
+            'recipe' => $recipe,
+        ]);
+    }
+
+
 }

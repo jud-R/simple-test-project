@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Entity\Step;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\RecipeRepository;
@@ -20,25 +19,18 @@ class Recipe
     #[ORM\Column(length: 255)]
     private ?string $recipeName = null;
 
-    #[ORM\Column]
-    private ?int $step = null;
-
     #[ORM\Column(length: 255)]
     private ?string $duration = null;
 
-    #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: Ingredient::class)]
+    #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: Ingredient::class, cascade: ['persist', 'remove'])]
     private Collection $ingredients;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
-    #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: Step::class)]
-    private Collection $steps;
-
     public function __construct()
     {
         $this->ingredients = new ArrayCollection();
-        $this->steps = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -54,18 +46,6 @@ class Recipe
     public function setRecipeName(string $recipeName): self
     {
         $this->recipeName = $recipeName;
-
-        return $this;
-    }
-
-    public function getStep(): ?int
-    {
-        return $this->step;
-    }
-
-    public function setStep(int $step): self
-    {
-        $this->step = $step;
 
         return $this;
     }
@@ -118,33 +98,4 @@ class Recipe
         return $this;
     }
 
-    /**
-     * @return Collection<int, Step>
-     */
-    public function getSteps(): Collection
-    {
-        return $this->steps;
-    }
-
-    public function addStep(Step $step): self
-    {
-        if (!$this->steps->contains($step)) {
-            $this->steps->add($step);
-            $step->setRecipe($this);
-        }
-
-        return $this;
-    }
-
-    public function removeStep(Step $step): self
-    {
-        if ($this->steps->removeElement($step)) {
-            // set the owning side to null (unless already changed)
-            if ($step->getRecipe() === $this) {
-                $step->setRecipe(null);
-            }
-        }
-
-        return $this;
-    }
 }

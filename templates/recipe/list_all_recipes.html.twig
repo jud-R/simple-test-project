@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello RecipeController!{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/recipe.css') }}">
+{% endblock %}
+
+{% block body %}
+
+<div class="example-wrapper">
+    <h1>Toutes les recettes</h1>
+
+    <div class="recipe-list">
+        {% for recipe in recipes %}
+            <div class="recipe-item">
+                <a href="{{ path('app_show_recipe', {'id': recipe.id}) }}">{{ recipe.recipeName }}</a>
+            </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+{% endblock %}

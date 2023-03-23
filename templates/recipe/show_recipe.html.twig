@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello RecipeController!{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/recipe.css') }}">
+{% endblock %}
+
+{% block body %}
+
+<div class="recipe-details">
+
+  <h1>{{ recipe.recipeName }}</h1>
+  <p>{{ recipe.duration }}</p>
+    
+  <h3>Liste des ingrédients</h3>
+  <ul class="ingredients-list">
+     {% for ingredient in recipe.ingredients %}
+       <li class="ingredient">{{ ingredient.ingredientName }}</li>
+       <li class="quantity">{{ ingredient.quantity }}</li>
+     {% endfor %}
+  </ul>
+
+  <p class="description">{{ recipe.description }}</p>
+
+</div>
+
+{% endblock %}

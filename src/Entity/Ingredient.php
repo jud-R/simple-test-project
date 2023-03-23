@@ -21,7 +21,7 @@ class Ingredient
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $quantity = null;
 
-    #[ORM\ManyToOne(inversedBy: 'steps')]
+    #[ORM\ManyToOne(inversedBy: 'steps', cascade: ['persist', 'remove'])]
     private ?Recipe $recipe = null;
 
     public function getId(): ?int
