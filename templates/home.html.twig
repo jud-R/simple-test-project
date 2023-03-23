@@ -9,13 +9,17 @@
 
 {% block body %}
 
-<div class="recipe-details">
-
-<h1>Vous pouvez créer et enregistrer vos recettes</h1>
-<h3>Commencez maintenant</h3>
-  <a href="{{ path('app_recipe') }}">C'est parti !</a>
-
-
+<div class="recipe-details mt-5">
+    <div class="card mx-auto p-3" style="max-width: 50%;">
+        <div class="card-body">
+            <h3 class="text-center">Commencez maintenant</h3>
+            <p class="card-text mt-4 d-flex justify-content-center align-items-center">
+                <a href="{{ path('app_recipe') }}">C'est parti !</a>
+            </p>
+        </div>
+    </div>
 </div>
+
+
 
 {% endblock %}

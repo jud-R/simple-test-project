@@ -16,7 +16,7 @@
     {{ form_row(form.recipeName, {'label': 'Nom de la recette'}) }}
     {{ form_row(form.duration, {'label': 'Durée de préparation'}) }}
 
-    <h3>Ingredients</h3>
+    <label class="form-label required">Ingredients</label>
     <ul class="ingredients"
         data-index="{{ form.ingredients|length > 0 ? form.ingredients|last.vars.name + 1 : 0 }}"
         data-prototype="{{ form_widget(form.ingredients.vars.prototype)|e('html_attr') }}"
@@ -34,7 +34,9 @@
 
     <button type="submit">Créer la recette</button>
 
-{{ form_end(form, {'render_rest': false}) }}
+{# {{ form_end(form, {'render_rest': false}) }} #}
+{{ form_end(form) }}
+
 </div>
 
 

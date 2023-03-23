@@ -17,11 +17,8 @@ class RecipeController extends AbstractController
     #[Route('/recipe', name: 'app_recipe')]
     public function index(Request $request, EntityManagerInterface $em): Response
     {
-        
         $recipe = new Recipe();
-        // $ingredient = new Ingredient;
         
-        // $formIngredient = $this->createForm(IngredientType::class, $ingredient);
         $form = $this->createForm(RecipeType::class, $recipe);
 
         $form->handleRequest($request);
@@ -33,8 +30,7 @@ class RecipeController extends AbstractController
             $this->addFlash('success', 'Recette créée! ');
         }
         
-        
-        return $this->render('recipe/recipe.html.twig', [
+        return $this->render('recipe/create_recipe.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -43,7 +39,6 @@ class RecipeController extends AbstractController
     public function list(Request $request, RecipeRepository $recipeRepository): Response
     {
         $recipes = $recipeRepository->findAll();
-        //dd($recipes);
         return $this->render('recipe/list_all_recipes.html.twig', [
             'recipes' => $recipes,
         ]);
