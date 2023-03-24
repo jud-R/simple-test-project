@@ -19,15 +19,16 @@ class RecipeFixture extends Fixture
         for ($i = 0; $i < 5000; $i++) {
             $recipe = new Recipe();
             $recipe->setRecipeName($faker->sentence(3, true));
-            $recipe->setDuration($faker->numberBetween(10, 180));
-            $recipe->setDescription($faker->paragraphs(3, true));
+            $recipe->setDuration((string) $faker->numberBetween(10, 180));
+            $description = $faker->paragraphs(3, true);
+            $recipe->setDescription($description);
 
             // Générer des ingrédients aléatoires
             $ingredients = [];
             for ($j = 0; $j < $faker->numberBetween(2, 10); $j++) {
                 $ingredient = new Ingredient();
                 $ingredient->setIngredientName($faker->word);
-                $ingredient->setQuantity($faker->randomFloat(2, 0.1, 10));
+                $ingredient->setQuantity((string)$faker->randomFloat(2, 0.1, 10));
                 $recipe->addIngredient($ingredient);
             }
             $manager->persist($recipe);

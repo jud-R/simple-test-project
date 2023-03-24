@@ -26,7 +26,7 @@ class RecipeController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $recipe = $form->getData();
-
+            /** @var Recipe $recipe */
             $em->persist($recipe);
             $em->flush();
             $this->addFlash('success', 'Recette créée! ');
@@ -51,14 +51,21 @@ class RecipeController extends AbstractController
         ]);
     }
 
-    #[Route('/show/{id}', name: 'app_show_recipe')]
-    public function show(Request $request, RecipeRepository $recipeRepository, Recipe $recipe): Response
-    {
-        $recipe = $recipeRepository->find($recipe);
-        return $this->render('recipe/show_recipe.html.twig', [
-            'recipe' => $recipe,
-        ]);
+#[Route('/show/{id}', name: 'app_show_recipe')]
+public function show(Request $request, RecipeRepository $recipeRepository, int $id): Response
+{
+    $recipe = $recipeRepository->find($id);
+    
+    if (!$recipe) {
+        $this->addFlash('danger', 'cette recette n\'existe pas!');
+        return $this->redirectToRoute('app_recipe_list'); 
     }
+    
+    return $this->render('recipe/show_recipe.html.twig', [
+        'recipe' => $recipe,
+    ]);
+}
+
 
 
 }
