@@ -33,7 +33,7 @@ class RecipeController extends AbstractController
         }
         
         return $this->render('recipe/create_recipe.html.twig', [
-            'form' => $form->createView(),
+            'form' => $form,
         ]);
     }
 
@@ -52,7 +52,7 @@ class RecipeController extends AbstractController
     }
 
 #[Route('/show/{id}', name: 'app_show_recipe')]
-public function show(Request $request, RecipeRepository $recipeRepository, int $id): Response
+public function show(RecipeRepository $recipeRepository, int $id): Response
 {
     $recipe = $recipeRepository->find($id);
     

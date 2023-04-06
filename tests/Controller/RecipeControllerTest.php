@@ -2,10 +2,11 @@
 
 namespace App\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use App\Repository\RecipeRepository;
 use App\Entity\Recipe;
+use App\Repository\RecipeRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class RecipeControllerTest extends WebTestCase
 {
@@ -14,7 +15,7 @@ class RecipeControllerTest extends WebTestCase
         $client = static::createClient();
         $crawler = $client->request('GET', '/recipe');
 
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
         $form = $crawler->selectButton('Créer la recette')->form();
         $form['recipe[recipeName]'] = 'Test Recipe';
@@ -30,7 +31,7 @@ class RecipeControllerTest extends WebTestCase
         $client = static::createClient();
         $crawler = $client->request('GET', '/list');
 
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertEquals(\Symfony\Component\HttpFoundation\Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $this->assertSelectorTextContains('h1', 'Toutes les recettes');
     }
 
@@ -50,7 +51,7 @@ class RecipeControllerTest extends WebTestCase
 
         $crawler = $client->request('GET', '/show/' . $recipe->getId());
 
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertEquals(\Symfony\Component\HttpFoundation\Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $this->assertSelectorTextContains('h1', $recipe->getRecipeName());
     }
 }
