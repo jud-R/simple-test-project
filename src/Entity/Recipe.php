@@ -22,8 +22,10 @@ class Recipe
     #[ORM\Column(length: 255)]
     private ?string $duration = null;
 
+    /**
+     * @var Collection<int, Ingredient>
+     */
     #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: Ingredient::class, cascade: ['persist', 'remove'])]
-    #[\ReturnTypeWillChange]
     private Collection $ingredients;
 
     #[ORM\Column(type: Types::TEXT)]
@@ -66,7 +68,6 @@ class Recipe
     /**
      * @return Collection<int, Ingredient>
      */
-    #[\ReturnTypeWillChange]
     public function getIngredients(): Collection
     {
         return $this->ingredients;

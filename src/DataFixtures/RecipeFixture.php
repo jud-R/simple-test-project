@@ -20,7 +20,10 @@ class RecipeFixture extends Fixture
             $recipe = new Recipe();
             $recipe->setRecipeName($faker->sentence(3, true));
             $recipe->setDuration((string) $faker->numberBetween(10, 180));
-            $description = $faker->paragraphs(3, true);
+            // $description = $faker->paragraphs(3, true);
+            /** @var string[] $descriptionArray */
+            $descriptionArray = $faker->paragraphs(3, false);
+            $description = implode("\n\n", $descriptionArray);
             $recipe->setDescription($description);
 
             // Générer des ingrédients aléatoires
